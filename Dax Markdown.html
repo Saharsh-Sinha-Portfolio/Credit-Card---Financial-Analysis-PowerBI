@@ -1,0 +1,39 @@
+<html><head><style>body {
+   color: black;
+}
+</style></head><body><h1 id="dax-queries-for-credit-card-utilization">DAX Queries for Credit Card Utilization</h1>
+<h2 id="age-group-calculation">Age Group Calculation</h2>
+<p>AgeGroup = SWITCH(
+TRUE(),
+&#39;public cust_detail&#39;[customer_age] &lt; 30, &quot;20-30&quot;,
+&#39;public cust_detail&#39;[customer_age] &gt;= 30 &amp;&amp; &#39;public cust_detail&#39;[customer_age] &lt; 40, &quot;30-40&quot;,
+&#39;public cust_detail&#39;[customer_age] &gt;= 40 &amp;&amp; &#39;public cust_detail&#39;[customer_age] &lt; 50, &quot;40-50&quot;,
+&#39;public cust_detail&#39;[customer_age] &gt;= 50 &amp;&amp; &#39;public cust_detail&#39;[customer_age] &lt; 60, &quot;50-60&quot;,
+&#39;public cust_detail&#39;[customer_age] &gt;= 60, &quot;60+&quot;,
+&quot;unknown&quot;
+)</p>
+<h2 id="income-group-calculation">Income Group Calculation</h2>
+<p>IncomeGroup = SWITCH(
+TRUE(),
+&#39;public cust_detail&#39;[income] &lt; 35000, &quot;Low&quot;,
+&#39;public cust_detail&#39;[income] &gt;= 35000 &amp;&amp; &#39;public cust_detail&#39;[income] <70000, "Med",
+'public cust_detail'[income] >= 70000, &quot;High&quot;,
+&quot;unknown&quot;
+)</p>
+<h2 id="week-number-calculation">Week Number Calculation</h2>
+<p>week_num2 = WEEKNUM(&#39;public cc_detail&#39;[week_start_date])</p>
+<h2 id="revenue-calculation">Revenue Calculation</h2>
+<p>Revenue = &#39;public cc_detail&#39;[annual_fees] + &#39;public cc_detail&#39;[total_trans_amt] + &#39;public cc_detail&#39;[interest_earned]</p>
+<h2 id="current-week-revenue-calculation">Current Week Revenue Calculation</h2>
+<p>Current_week_Reveneue = CALCULATE(
+SUM(&#39;public cc_detail&#39;[Revenue]),
+FILTER(
+ALL(&#39;public cc_detail&#39;),
+&#39;public cc_detail&#39;[week_num2] = MAX(&#39;public cc_detail&#39;[week_num2])))</p>
+<h2 id="previous-week-revenue-calculation">Previous Week Revenue Calculation</h2>
+<p>Previous_week_Reveneue = CALCULATE(
+SUM(&#39;public cc_detail&#39;[Revenue]),
+FILTER(
+ALL(&#39;public cc_detail&#39;),
+&#39;public cc_detail&#39;[week_num2] = MAX(&#39;public cc_detail&#39;[week_num2])-1))</p>
+</body></html>
